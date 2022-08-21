@@ -37,3 +37,23 @@ pip3 install -r requirements.txt
 ```
 python3 init_db.py
 ```
+
+## Design
+
+The application has been developed using the following:
+
+- Frontend: Flask Templates
+- Backend: Flask
+- Database: Sqlite3
+
+## Limitations
+
+The application supports `PyTeal` source code but the application expects a source code url and a method name that returns a PyTeal construct that can be compiled into teal code.
+
+## Possible Enhancements
+
+- Support for Reach
+- UI/UX improvements
+- Better error handling
+- Docker Support
+
