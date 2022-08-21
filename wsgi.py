@@ -1,10 +1,10 @@
 from app import app
 from dotenv import load_dotenv
-import secrets
+import os
 
 load_dotenv()
 
 if __name__ == '__main__':
-    key = secrets.token_hex(24)
-    app.config['SECRET_KEY'] = key
+    SECRET_KEY = os.getenv('SECRET_KEY')
+    app.config['SECRET_KEY'] = SECRET_KEY
     app.run()
