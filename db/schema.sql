@@ -12,5 +12,6 @@ CREATE TABLE revision (
     status TEXT,
     validation_time DATETIME,
     approval_url TEXT,
-    clear_state_url TEXT
+    clear_state_url TEXT,
+    additional_info TEXT
 );

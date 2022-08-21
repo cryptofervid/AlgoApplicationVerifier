@@ -9,7 +9,72 @@
     <div class="container-fluid m-2 ">
     <h4>Verify Application</h4>
     <div class="container-fluid mt-2">
-        <form method="post" action={{ url_for('verify_application_revision') }}>
+
+        <div class="row mt-2">
+            <div class="col-2">
+                <label for="code_type">Code Type:</label>
+            </div>
+            <div class="col-6">
+                <select id="code_type_select" name="code_type" class="form-select" aria-label="Default select example">
+                  <option selected>Choose Source Code Type</option>
+                  <option value="Teal">Teal</option>
+                  <option value="PyTeal">PyTeal</option>
+                </select>
+            </div>
+        </div>
+
+        <form id="teal_form" method="post" action={{ url_for('verify_application_revision') }}>
+            <div class="row mt-2">
+                <div class="col-2">
+                    <label for="application_id">Application Id:</label>
+                </div>
+                <div class="col-6">
+                <input type="text" name="application_id"
+                       placeholder="Application Id"
+                       value="{{ request.form['application_id'] }}"/>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-2">
+                    <label for="approval_url">Approval Code Url:</label>
+                </div>
+                <div class="col-6">
+                    <input type="text" name="approval_url"
+                           placeholder="Approval Teal Code Url" size="150"
+                           value="{{ request.form['approval_url'] }}"/>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-2">
+                    <label for="clear_state_url">Clear State Code Url:</label>
+                </div>
+                <div class="col-6">
+                    <input type="text" name="clear_state_url" size="150"
+                           placeholder="Clear State Teal Code Url"
+                           value="{{ request.form['clear_state_url'] }}"/>
+                </div>
+            </div>
+
+            <input type="hidden" name="source_type"
+                   value="Teal"/>
+
+
+            <div class="row mt-2">
+                 <div class="col-2">
+                    <button type="submit" class="btn btn-primary">Verify</button>
+                 </div>
+            </div>
+
+            <div class="row mt-2">
+                 <div class="col-2">
+                 </div>
+            </div>
+
+        </form>
+
+        <form id="pyteal_form" method="post" action={{ url_for('verify_application_revision') }}>
             <div class="row mt-2">
                 <div class="col-2">
                     <label for="application_id">Application Id:</label>
@@ -44,6 +109,43 @@
             </div>
 
             <div class="row mt-2">
+                <div class="col-2">
+                    <label for="approval_method">Approval Method:</label>
+                </div>
+                <div class="col-6">
+                <input type="text" name="approval_method"
+                       placeholder="Approval Method"
+                       value="{{ request.form['approval_method'] }}"/>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-2">
+                    <label for="clear_state_method">Clear State Method:</label>
+                </div>
+                <div class="col-6">
+                <input type="text" name="clear_state_method"
+                       placeholder="Clear State Method"
+                       value="{{ request.form['clear_state_method'] }}"/>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-2">
+                    <label for="teal_version">Teal Version:</label>
+                </div>
+                <div class="col-6">
+                <input type="text" name="teal_version"
+                       placeholder="Teal Version"
+                       value="{{ request.form['teal_version'] }}"/>
+                </div>
+            </div>
+
+            <input type="hidden" name="source_type"
+                   value="PyTeal"/>
+
+
+            <div class="row mt-2">
                  <div class="col-2">
                     <button type="submit" class="btn btn-primary">Verify</button>
                  </div>
@@ -55,6 +157,8 @@
             </div>
 
         </form>
+
+
      </div>
     </div>
 
@@ -84,6 +188,7 @@
                                         <p><b>Status:</b> {{ revision.status }}</p>
                                         <p><b>Approval URL:</b> {{ revision.approval_url }}</p>
                                         <p><b>Clear State URL:</b> {{ revision.clear_state_url }}</p>
+                                        <p><b>Additional Info:</b> {{ revision.additional_info }}</p>
                                     </div>
                                 </li>
                             {% endfor %}
@@ -100,7 +205,24 @@
     <script>
         jQuery(function($){
             $('.table').footable();
+            $("#teal_form").hide()
+            $("#pyteal_form").hide()
+            $("#code_type_select").change(function() {
+                var value = $("#code_type_select option:selected").val();
+
+                if (value === 'Teal') {
+                    $("#teal_form").show()
+                    $("#pyteal_form").hide()
+                } else if (value === 'PyTeal') {
+                    $("#teal_form").hide()
+                    $("#pyteal_form").show()
+                } else {
+                    $("#teal_form").hide()
+                    $("#pyteal_form").hide()
+                }
+            });
         });
+
     </script>
 
 {% endblock %}

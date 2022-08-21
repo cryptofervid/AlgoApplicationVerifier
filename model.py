@@ -16,21 +16,22 @@ class Application:
 
 
 class Revision:
-    def __init__(self, application, status, date, commit_id, approval_url, clear_state_url):
+    def __init__(self, application, status, date, commit_id, approval_url, clear_state_url, additional_info):
         self.commit_id = commit_id
         self.application = application
         self.status = status
         self.date = date
         self.approval_url = approval_url
         self.clear_state_url = clear_state_url
+        self.additional_info = additional_info
 
     def save(self):
         conn = get_db_connection()
         conn.execute('INSERT INTO revision (application, status, validation_time, commit_id, '
-                     'approval_url, clear_state_url) VALUES (?,?,?,?,?,?) ON CONFLICT (commit_id) DO '
-                     'UPDATE SET status = ?, validation_time = ?, approval_url = ?, clear_state_url = ? '
+                     'approval_url, clear_state_url, additional_info) VALUES (?,?,?,?,?,?,?) ON CONFLICT (commit_id) DO '
+                     'UPDATE SET status = ?, validation_time = ?, approval_url = ?, clear_state_url = ?, additional_info = ? '
                      , (self.application, self.status, self.date, self.commit_id, self.approval_url,
-                        self.clear_state_url, self.status, self.date, self.approval_url,
-                        self.clear_state_url))
+                        self.clear_state_url, self.additional_info, self.status, self.date, self.approval_url,
+                        self.clear_state_url, self.additional_info))
         conn.commit()
         conn.close()
