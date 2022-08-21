@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template, redirect, url_for
+from flask import Flask, jsonify, request, render_template, redirect, url_for, flash
 from validationservice import verify_teal_application, get_all_applications, get_all_revisions_by_application, \
     verify_pyteal_application
 
@@ -43,6 +43,11 @@ def verify_application_revision():
         teal_version = int(teal_version)
 
         result = verify_pyteal_application(application_id, approval_url, clear_state_url, approval_method, clear_state_method, teal_version)
+
+    if result:
+        flash('Application verification passed', 'success')
+    else:
+        flash('Application verification failed', 'danger')
 
     return redirect(url_for('get_applications'))
 

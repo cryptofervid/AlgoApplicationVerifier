@@ -24,6 +24,15 @@
     <hr>
     <div class="content">
         {% block content %} {% endblock %}
+        <div id="messages">
+            {% for category, message in get_flashed_messages(with_categories=true) %}
+              <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
+              <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+              <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <!-- <strong>Title</strong> --> {{ message }}
+              </div>
+            {% endfor %}
+        </div>
     </div>
 </body>
 </html>

@@ -69,7 +69,7 @@ def verify_clear_state_code(algo_teal_helper: AlgoTealHelper, clear_state_teal_c
         return False
 
 
-def verify_teal_application(application_id: int, approval_url: str, clear_state_url: str) -> Dict:
+def verify_teal_application(application_id: int, approval_url: str, clear_state_url: str) -> bool:
     algo_teal_helper = AlgoTealHelper(application_id)
     algo_teal_helper.download_teal_bytecode()
 
@@ -80,9 +80,11 @@ def verify_teal_application(application_id: int, approval_url: str, clear_state_
     clear_state_comparison_result = verify_clear_state_code(algo_teal_helper, clear_state_repo.get_raw_code())
 
     status = UNVERIFIED_STATUS
+    verification_passed = False
 
     if approval_comparison_result is True and clear_state_comparison_result is True:
         status = VERIFIED_STATUS
+        verification_passed = True
 
     application = Application(application_id, status)
     application.save()
@@ -92,10 +94,10 @@ def verify_teal_application(application_id: int, approval_url: str, clear_state_
                         approval_repo.commit_url, clear_state_repo.commit_url,'')
     revision.save()
 
-    return {"status": status}
+    return verification_passed
 
 
-def verify_pyteal_application(application_id: int, approval_url: str, clear_state_url: str, approval_method: str, clear_state_method: str, teal_version: int) -> Dict:
+def verify_pyteal_application(application_id: int, approval_url: str, clear_state_url: str, approval_method: str, clear_state_method: str, teal_version: int) -> bool:
     algo_teal_helper = AlgoTealHelper(application_id)
     algo_teal_helper.download_teal_bytecode()
 
@@ -110,9 +112,11 @@ def verify_pyteal_application(application_id: int, approval_url: str, clear_stat
     clear_state_comparison_result = verify_clear_state_code(algo_teal_helper, clear_state_teal_code)
 
     status = UNVERIFIED_STATUS
+    verification_passed = False
 
     if approval_comparison_result is True and clear_state_comparison_result is True:
         status = VERIFIED_STATUS
+        verification_passed = True
 
     application = Application(application_id, status)
     application.save()
@@ -123,4 +127,4 @@ def verify_pyteal_application(application_id: int, approval_url: str, clear_stat
                         approval_repo.commit_url, clear_state_repo.commit_url, additional_info)
     revision.save()
 
-    return {"status": status}
+    return verification_passed
