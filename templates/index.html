@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="row text-center bg-primary text-white">
+        <h1>{% block title %} Application Verifier {% endblock %}</h1>
+    </div>
+
+    <div class="container-fluid m-2 ">
+    <h4>Verify Application</h4>
+    <div class="container-fluid mt-2">
+        <form method="post" action={{ url_for('verify_application_revision') }}>
+            <div class="row mt-2">
+                <div class="col-2">
+                    <label for="application_id">Application Id:</label>
+                </div>
+                <div class="col-6">
+                <input type="text" name="application_id"
+                       placeholder="Application Id"
+                       value="{{ request.form['application_id'] }}"/>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-2">
+                    <label for="approval_url">Approval Code Url:</label>
+                </div>
+                <div class="col-6">
+                    <input type="text" name="approval_url"
+                           placeholder="Approval Teal Code Url" size="150"
+                           value="{{ request.form['approval_url'] }}"/>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-2">
+                    <label for="clear_state_url">Clear State Code Url:</label>
+                </div>
+                <div class="col-6">
+                    <input type="text" name="clear_state_url" size="150"
+                           placeholder="Clear State Teal Code Url"
+                           value="{{ request.form['clear_state_url'] }}"/>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                 <div class="col-2">
+                    <button type="submit" class="btn btn-primary">Verify</button>
+                 </div>
+            </div>
+
+            <div class="row mt-2">
+                 <div class="col-2">
+                 </div>
+            </div>
+
+        </form>
+     </div>
+    </div>
+
+        <div class="container-fluid overflow-auto mt-5">
+
+            <table class="table table-striped table-bordered" data-toggle-column="first">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col" data-breakpoints="xs">ApplicationId</th>
+                        <th scope="col" data-breakpoints="xs">Status</th>
+                        <th scope="col" data-breakpoints="all" data-title="Details">Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for application in applications %}
+                    <tr>
+                        <td>{{ application.id }}</td>
+                        <td>{{ application.status }}</td>
+                        <td>
+                            <div class="overflow-auto">
+                            <ul>
+                            {% for revision in application.revisions %}
+                                <li>
+                                    <div>
+                                        <p><b>CommitId:</b> {{ revision.commit_id }}</p>
+                                        <p><b>VerificationDateTime:</b> {{ revision.date }}</p>
+                                        <p><b>Status:</b> {{ revision.status }}</p>
+                                        <p><b>Approval URL:</b> {{ revision.approval_url }}</p>
+                                        <p><b>Clear State URL:</b> {{ revision.clear_state_url }}</p>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                            </ul>
+                            </div>
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    <script>
+        jQuery(function($){
+            $('.table').footable();
+        });
+    </script>
+
+{% endblock %}
