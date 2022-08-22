@@ -19,7 +19,7 @@ def test_extract_code():
     """
 
     pytealgithub = GithubCodeRepository('https://github.com/algorand/pyteal/blob/master/examples/application/asset.py')
-    pytealhelper = PyTealHelper(pytealgithub.get_raw_code(), 'clear_state_program', '', '', 2)
+    pytealhelper = PyTealHelper(pytealgithub.get_raw_code(), 'approval_program', pytealgithub.get_raw_code(), 'clear_state_program', 2)
     print(pytealhelper.get_approval_teal())
 
-    assert 
+    assert
