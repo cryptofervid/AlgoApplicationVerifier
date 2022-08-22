@@ -23,7 +23,7 @@
             </div>
         </div>
 
-        <form id="teal_form" method="post" action={{ url_for('verify_application_revision') }}>
+        <form id="teal_form" name="teal_form" method="post" onsubmit="return validateTealForm()" action={{ url_for('verify_application_revision') }}>
             <div class="row mt-2">
                 <div class="col-2">
                     <label for="application_id">Application Id:</label>
@@ -74,7 +74,7 @@
 
         </form>
 
-        <form id="pyteal_form" method="post" action={{ url_for('verify_application_revision') }}>
+        <form id="pyteal_form" name="pyteal_form" onsubmit="return validatePyTealForm()" method="post" action={{ url_for('verify_application_revision') }}>
             <div class="row mt-2">
                 <div class="col-2">
                     <label for="application_id">Application Id:</label>
@@ -223,6 +223,56 @@
             });
         });
 
+        function validateTealForm() {
+            let appId = document.forms["teal_form"]["application_id"].value;
+            if (appId === "") {
+                alert("Application Id must be filled out");
+                return false;
+            }
+            let approvalUrl = document.forms["teal_form"]["approval_url"].value;
+            if (approvalUrl === "") {
+                alert("Approval Url must be filled out");
+                return false;
+            }
+            let clearStateUrl = document.forms["teal_form"]["clear_state_url"].value;
+            if (clearStateUrl === "") {
+                alert("Clear State Url must be filled out");
+                return false;
+            }
+        }
+
+        function validatePyTealForm() {
+          let appId = document.forms["pyteal_form"]["application_id"].value;
+          if (appId === "") {
+            alert("Application Id must be filled out");
+            return false;
+          }
+          let approvalUrl = document.forms["pyteal_form"]["approval_url"].value;
+          if (approvalUrl === "") {
+            alert("Approval Url must be filled out");
+            return false;
+          }
+          let clearStateUrl = document.forms["pyteal_form"]["clear_state_url"].value;
+          if (clearStateUrl === "") {
+            alert("Clear State Url must be filled out");
+            return false;
+          }
+          let approvalMethod = document.forms["pyteal_form"]["approval_method"].value;
+          if (approvalMethod === "") {
+            alert("Approval Method must be filled out");
+            return false;
+          }
+          let clearStateMethod = document.forms["pyteal_form"]["clear_state_method"].value;
+          if (clearStateMethod === "") {
+            alert("Clear State Method must be filled out");
+            return false;
+          }
+          let tealVersion = document.forms["pyteal_form"]["teal_version"].value;
+          if (tealVersion === "") {
+            alert("Teal Version must be filled out");
+            return false;
+          }
+        }
     </script>
 
 {% endblock %}
